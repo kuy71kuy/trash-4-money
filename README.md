@@ -3,4 +3,4 @@ Mini Project Golang Alterra Academy
 
 ERD 
 
-![erd-t4m](https://i.ibb.co/NjKsZ33/diagram-export-10-31-2023-4-16-09-PM.png)
+![erd-t4m](https://i.ibb.co/Th509yp/diagram-export-10-31-2023-4-24-46-PM.png)
