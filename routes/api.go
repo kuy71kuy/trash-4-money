@@ -3,13 +3,17 @@ package routes
 import (
 	"app/controller"
 	"app/middleware"
+	"app/utils"
+	m "github.com/labstack/echo-jwt"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"os"
 )
 
+func customJWTErrorHandler(c echo.Context, err error) error {
+	return c.JSON(http.StatusUnauthorized, utils.ErrorResponse("Invalid credentials"))
+}
 func Init() *echo.Echo {
-	//ea := e.Group("")
-	//ea.Use(m.JWT([]byte(os.Getenv("SECRET_KEY"))))
 
 	e := echo.New()
 
@@ -18,37 +22,48 @@ func Init() *echo.Echo {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Welcome to RESTful API Services")
 	})
+	eJwt := e.Group("")
 
+	eJwt.Use(m.WithConfig(m.Config{
+		SigningKey:   []byte(os.Getenv("SECRET_KEY")),
+		ErrorHandler: customJWTErrorHandler, // Set the custom error handler
+	}))
+
+	//Manage User
 	e.POST("/users/register", controller.Store)
 	e.POST("/users/login", controller.Login)
-	e.GET("/users", controller.Index)
-	e.GET("/users/:id", controller.Show)
-	e.PUT("/users/:id", controller.Update)
-	e.DELETE("/users/:id", controller.Delete)
+	eJwt.GET("/users", controller.Index)
+	eJwt.GET("/users/:id", controller.Show)
+	eJwt.PUT("/users/:id", controller.Update)
+	eJwt.DELETE("/users/:id", controller.Delete)
 
-	e.POST("/admins/register", controller.RegisterAdmin)
+	//Manage Admin
+	eJwt.POST("/admins/register", controller.RegisterAdmin)
 	e.POST("/admins/login", controller.LoginAdmin)
 
-	e.GET("/points/:id", controller.PointUser)
-	e.GET("/points", controller.PointUsers)
-	e.GET("/points/rank", controller.RankPointUsers)
-	e.PUT("/points/add/:id", controller.AddPoint)
-	e.PUT("/points/sub/:id", controller.SubPoint)
+	//Manage Point
+	eJwt.GET("/points/:id", controller.PointUser)
+	eJwt.GET("/points", controller.PointUsers)
+	eJwt.GET("/points/rank", controller.RankPointUsers)
+	eJwt.PUT("/points/add/:id", controller.AddPoint)
+	eJwt.PUT("/points/sub/:id", controller.SubPoint)
 
-	e.GET("/articles/:id", controller.Article)
-	e.GET("/articles", controller.Articles)
-	e.POST("/articles", controller.CreateArticle)
-	e.POST("/articles/ai", controller.CreateArticleAi)
-	e.POST("/ask", controller.AskAi)
-	e.PUT("/articles/:id", controller.UpdateArticle)
-	e.DELETE("/articles/:id", controller.DeleteArticle)
+	//Manage Article
+	eJwt.GET("/articles/:id", controller.Article)
+	eJwt.GET("/articles", controller.Articles)
+	eJwt.POST("/articles", controller.CreateArticle)
+	eJwt.POST("/articles/ai", controller.CreateArticleAi)
+	eJwt.POST("/ask", controller.AskAi)
+	eJwt.PUT("/articles/:id", controller.UpdateArticle)
+	eJwt.DELETE("/articles/:id", controller.DeleteArticle)
 
-	e.GET("/trashes", controller.Trashes)
-	e.GET("/trashes/:id", controller.Trash)
-	e.GET("/users/:id/trashes", controller.TrashUser)
-	e.POST("/trashes", controller.CreateTrash)
-	e.PUT("/trashes/:id", controller.UpdateTrashStatus)
-	e.PUT("/trashes/:id/done", controller.UpdateTrashStatusDone)
+	//Manage Trash
+	eJwt.GET("/trashes", controller.Trashes)
+	eJwt.GET("/trashes/:id", controller.Trash)
+	eJwt.GET("/users/:id/trashes", controller.TrashUser)
+	eJwt.POST("/trashes", controller.CreateTrash)
+	eJwt.PUT("/trashes/:id", controller.UpdateTrashStatus)
+	eJwt.PUT("/trashes/:id/done", controller.UpdateTrashStatusDone)
 
 	return e
 
