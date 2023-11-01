@@ -35,6 +35,14 @@ func Init() *echo.Echo {
 	e.PUT("/points/add/:id", controller.AddPoint)
 	e.PUT("/points/sub/:id", controller.SubPoint)
 
+	e.GET("/articles/:id", controller.Article)
+	e.GET("/articles", controller.Articles)
+	e.POST("/articles", controller.CreateArticle)
+	e.POST("/articles/ai", controller.CreateArticleAi)
+	e.POST("/ask", controller.AskAi)
+	e.PUT("/articles/:id", controller.UpdateArticle)
+	e.DELETE("/articles/:id", controller.DeleteArticle)
+
 	return e
 
 }
