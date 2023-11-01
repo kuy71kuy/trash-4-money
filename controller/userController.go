@@ -63,6 +63,14 @@ func Store(c echo.Context) error {
 	if err := config.DB.Create(&userDb).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to store user data"))
 	}
+	point := model.Point{
+		UserId: int(userDb.ID),
+		Name:   userDb.Name,
+		Amount: 0,
+	}
+	if err := config.DB.Create(&point).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to create point for this user"))
+	}
 
 	// Return the response without including a JWT token
 	response := res.GetConvertGeneral(userDb)
@@ -153,7 +161,14 @@ func Delete(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to retrieve user"))
 	}
 
+	var point model.Point
+
+	if err := config.DB.Where("user_id = ?", id).First(&point).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to retrieve point from this user"))
+	}
+
 	config.DB.Delete(&existingUser)
+	config.DB.Delete(&point)
 
 	return c.JSON(http.StatusOK, utils.SuccessResponse("User data successfully deleted", nil))
 }

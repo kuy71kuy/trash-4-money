@@ -29,6 +29,12 @@ func Init() *echo.Echo {
 	e.POST("/admins/register", controller.RegisterAdmin)
 	e.POST("/admins/login", controller.LoginAdmin)
 
+	e.GET("/points/:id", controller.PointUser)
+	e.GET("/points", controller.PointUsers)
+	e.GET("/points/rank", controller.RankPointUsers)
+	e.PUT("/points/add/:id", controller.AddPoint)
+	e.PUT("/points/sub/:id", controller.SubPoint)
+
 	return e
 
 }
