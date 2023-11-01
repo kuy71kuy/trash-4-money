@@ -43,6 +43,13 @@ func Init() *echo.Echo {
 	e.PUT("/articles/:id", controller.UpdateArticle)
 	e.DELETE("/articles/:id", controller.DeleteArticle)
 
+	e.GET("/trashes", controller.Trashes)
+	e.GET("/trashes/:id", controller.Trash)
+	e.GET("/users/:id/trashes", controller.TrashUser)
+	e.POST("/trashes", controller.CreateTrash)
+	e.PUT("/trashes/:id", controller.UpdateTrashStatus)
+	e.PUT("/trashes/:id/done", controller.UpdateTrashStatusDone)
+
 	return e
 
 }
