@@ -36,11 +36,11 @@ func ConnectDB() {
 		panic("Failed to Connect Database")
 	}
 
-    InitMigrate()
+	InitMigrate()
 
 	fmt.Println("Connected to Database")
 }
 
 func InitMigrate() {
-	DB.AutoMigrate(&model.User{})
+	DB.AutoMigrate(&model.User{}, &model.Point{})
 }
