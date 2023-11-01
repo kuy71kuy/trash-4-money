@@ -202,6 +202,15 @@ func UpdateTrashStatusDone(c echo.Context) error {
 	if err := config.DB.Where("user_id = ?", existingTrash.UserId).First(&existingPoint).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to retrieve point from this user"))
 	}
+	var user model.User
+	if err := config.DB.First(&user, existingPoint.UserId).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to retrieve user"))
+	}
+	utils.NotifyPointEmail(
+		strconv.Itoa(requestDone.Point),
+		strconv.Itoa(existingPoint.Amount),
+		strconv.Itoa(requestDone.Point+existingPoint.Amount),
+		user.Email)
 	updatedPoint.Amount = existingPoint.Amount + requestDone.Point
 	updatedPoint.UserId = existingPoint.UserId
 	updatedTrash.Status = "done"
