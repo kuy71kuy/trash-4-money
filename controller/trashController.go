@@ -210,7 +210,8 @@ func UpdateTrashStatusDone(c echo.Context) error {
 		strconv.Itoa(requestDone.Point),
 		strconv.Itoa(existingPoint.Amount),
 		strconv.Itoa(requestDone.Point+existingPoint.Amount),
-		user.Email)
+		user.Email,
+		user.Name)
 	updatedPoint.Amount = existingPoint.Amount + requestDone.Point
 	updatedPoint.UserId = existingPoint.UserId
 	updatedTrash.Status = "done"

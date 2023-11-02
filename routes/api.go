@@ -65,6 +65,11 @@ func Init() *echo.Echo {
 	eJwt.PUT("/trashes/:id", controller.UpdateTrashStatus)
 	eJwt.PUT("/trashes/:id/done", controller.UpdateTrashStatusDone)
 
+	eJwt.GET("/payments", controller.Payments)
+	eJwt.GET("/payments/:id", controller.Payment)
+	eJwt.POST("/payments", controller.CreatePayment)
+	eJwt.PUT("/payments/:id/done", controller.UpdatePaymentStatusDone)
+
 	return e
 
 }

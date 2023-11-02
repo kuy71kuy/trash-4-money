@@ -96,7 +96,8 @@ func AddPoint(c echo.Context) error {
 		strconv.Itoa(updatedPoint.Amount),
 		strconv.Itoa(existingPoint.Amount),
 		strconv.Itoa(updatedPoint.Amount+existingPoint.Amount),
-		user.Email)
+		user.Email,
+		user.Name)
 	updatedPoint.Amount = updatedPoint.Amount + existingPoint.Amount
 	updatedPoint.UserId = existingPoint.UserId
 	if updatedPoint.Amount < 0 {

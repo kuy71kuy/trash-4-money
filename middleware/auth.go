@@ -31,7 +31,7 @@ func CreateToken(userId int, name string, role string) string {
 	payloadParser.ID = uint(userId)
 	payloadParser.Name = name
 	payloadParser.Role = role
-	payloadParser.ExpiresAt = jwt.NewNumericDate(time.Now().Add(time.Minute * 60))
+	payloadParser.ExpiresAt = jwt.NewNumericDate(time.Now().Add(time.Hour * 24))
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payloadParser)
 	t, _ := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
