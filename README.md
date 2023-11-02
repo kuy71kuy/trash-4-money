@@ -1,6 +1,6 @@
 # trash-4-money
 Mini Project Golang Alterra Academy
 
-ERD 
+ERD : https://app.eraser.io/workspace/VpHfZXyIA0kJuudpDIqB?origin=share
 
-![erd-t4m](https://i.ibb.co/Th509yp/diagram-export-10-31-2023-4-24-46-PM.png)
+API Docs : https://documenter.getpostman.com/view/24505969/2s9YXcdjzF
