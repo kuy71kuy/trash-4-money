@@ -40,6 +40,14 @@ func RegisterAdmin(c echo.Context) error {
 	if err := config.DB.Create(&adminDb).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to store admin data"))
 	}
+	point := model.Point{
+		UserId: int(adminDb.ID),
+		Name:   adminDb.Name,
+		Amount: 0,
+	}
+	if err := config.DB.Create(&point).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to create point for this user"))
+	}
 
 	// Return the response without including a JWT token
 	response := res.GetConvertGeneral(adminDb)
