@@ -1,11 +1,11 @@
 FROM golang:1.21-alpine
 
-COPY . /app
+COPY . /t4m
 
-WORKDIR /app
+WORKDIR /t4m
 
 RUN go mod tidy
 
-RUN go build -o app .
+RUN go build -o t4m .
 
-CMD ["/app/app"]
+CMD ["/t4m/t4m"]
