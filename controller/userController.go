@@ -8,7 +8,9 @@ import (
 	"app/utils"
 	"app/utils/req"
 	"app/utils/res"
+	"fmt"
 	"github.com/labstack/echo/v4"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -50,7 +52,8 @@ func Show(c echo.Context) error {
 
 func Store(c echo.Context) error {
 	var user web.UserRequest
-
+	fmt.Println("printcreateuser")
+	log.Print("logcreateuser")
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, utils.ErrorResponse("Invalid request body"))
 	}
