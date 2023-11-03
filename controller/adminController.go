@@ -11,7 +11,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"os"
-	"strings"
 )
 
 func RegisterAdmin(c echo.Context) error {
@@ -21,7 +20,7 @@ func RegisterAdmin(c echo.Context) error {
 	if headerAuth == "" {
 		headerAuth = "Bearer " + model.DummyToken
 	}
-	token := strings.Split(headerAuth, " ")[1]
+	token := headerAuth
 	tokenAdmin := os.Getenv("TOKEN_ADMIN")
 	if token != tokenAdmin {
 		return c.JSON(http.StatusUnauthorized, utils.ErrorResponse("Invalid credentials"))
