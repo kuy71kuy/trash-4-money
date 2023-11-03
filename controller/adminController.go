@@ -10,6 +10,7 @@ import (
 	"app/utils/res"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -21,10 +22,8 @@ func RegisterAdmin(c echo.Context) error {
 		headerAuth = "Bearer " + model.DummyToken
 	}
 	token := strings.Split(headerAuth, " ")[1]
-	var claim *utils.MyClaims
-	claim = utils.ParseToken(token)
-
-	if claim.Role != "super" {
+	tokenAdmin := os.Getenv("TOKEN_ADMIN")
+	if token != tokenAdmin {
 		return c.JSON(http.StatusUnauthorized, utils.ErrorResponse("Invalid credentials"))
 	}
 
