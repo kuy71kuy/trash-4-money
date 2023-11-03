@@ -23,8 +23,8 @@ func RegisterAdmin(c echo.Context) error {
 	}
 	token := headerAuth
 	tokenAdmin := os.Getenv("TOKEN_ADMIN")
-	fmt.Println("\ntoken: " + token)
-	fmt.Println("\ntokenAdmin: " + tokenAdmin)
+	fmt.Println("\ntoken: ea." + token + ".ea")
+	fmt.Println("\ntokenAdmin: ea." + tokenAdmin + ".ea")
 	if token != tokenAdmin {
 		return c.JSON(http.StatusUnauthorized, utils.ErrorResponse("Invalid credentials"))
 	}
