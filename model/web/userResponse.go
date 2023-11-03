@@ -1,13 +1,13 @@
 package web
 
-type UserReponse struct {
+type UserResponse struct {
 	Id       int    `json:"id"`
 	Name     string `json:"name" form:"name"`
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
 }
 
-type GetUserReponse struct {
+type GetUserResponse struct {
 	Id    int    `json:"id"`
 	Name  string `json:"name" form:"name"`
 	Email string `json:"email" form:"email"`

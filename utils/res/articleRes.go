@@ -21,8 +21,8 @@ func ArticleConvertIndex(articles []model.Article) []web.ArticleResponse {
 	return results
 }
 
-func xConvertGeneral(user *model.User) web.UserReponse {
-	return web.UserReponse{
+func xConvertGeneral(user *model.User) web.UserResponse {
+	return web.UserResponse{
 		Id:       int(user.ID),
 		Name:     user.Name,
 		Email:    user.Email,

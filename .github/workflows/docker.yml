@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: "main"
+    branches: "dev"
 
 jobs:
   build:
@@ -34,10 +34,10 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
+          password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
             docker stop ${{ secrets.CNAME }}
             docker rm ${{ secrets.CNAME }}
             docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/image-t4m
-            docker run --name ${{ secrets.CNAME }} -p 8080:8080 -d -e DB_HOST=${{secrets.DB_HOST}} -e DBPORT=3306 -e DB_USER=${{secrets.DB_USER}} -e DB_PORT=${{secrets.DB_PORT}} -e DB_NAME=${{secrets.DB_NAME}} -e DB_PASS=${{secrets.DB_PASS}} -e SECRET=${{secrets.SECRET_KEY}} -e APIOPENAI=${{secrets.SECRET_OPENAI_KEY}} -e CLOUD_NAME=${{secrets.CLOUD_NAME}} -e CLOUDINARY_KEY=${{secrets.CLOUDINARY_KEY}} -e CLOUDINARY_SECRET=${{secrets.CLOUDINARY_SECRET}} -e MAILER_SENDER_PASS=${{secrets.MAILER_SENDER_PASS}} -e MAILER_SENDER_MAIL=${{secrets.MAILER_SENDER_MAIL}} -e SERVER=8080 ${{ secrets.DOCKERHUB_USERNAME }}/image-t4m
+            docker run --name ${{ secrets.CNAME }} -p 8080:8080 -d -e DB_HOST=${{secrets.DB_HOST}} -e DBPORT=3306 -e DB_USER=${{secrets.DB_USER}} -e DB_PORT=${{secrets.DB_PORT}} -e DB_NAME=${{secrets.DB_NAME}} -e DB_PASS=${{secrets.DB_PASS}} -e SECRET_KEY=${{secrets.SECRET_KEY}} -e SECRET_OPENAI_KEY=${{secrets.SECRET_OPENAI_KEY}} -e CLOUD_NAME=${{secrets.CLOUD_NAME}} -e CLOUDINARY_KEY=${{secrets.CLOUDINARY_KEY}} -e CLOUDINARY_SECRET=${{secrets.CLOUDINARY_SECRET}} -e MAILER_SENDER_PASS=${{secrets.MAILER_SENDER_PASS}} -e MAILER_SENDER_MAIL=${{secrets.MAILER_SENDER_MAIL}} -e SERVER=8080 ${{ secrets.DOCKERHUB_USERNAME }}/image-t4m

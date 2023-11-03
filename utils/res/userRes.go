@@ -5,10 +5,10 @@ import (
 	"app/model/web"
 )
 
-func ConvertIndex(users []model.User) []web.GetUserReponse {
-	var results []web.GetUserReponse
+func ConvertIndex(users []model.User) []web.GetUserResponse {
+	var results []web.GetUserResponse
 	for _, user := range users {
-		userResponse := web.GetUserReponse{
+		userResponse := web.GetUserResponse{
 			Id:    int(user.ID),
 			Name:  user.Name,
 			Email: user.Email,
@@ -19,8 +19,8 @@ func ConvertIndex(users []model.User) []web.GetUserReponse {
 	return results
 }
 
-func ConvertGeneral(user *model.User) web.UserReponse {
-	return web.UserReponse{
+func ConvertGeneral(user *model.User) web.UserResponse {
+	return web.UserResponse{
 		Id:       int(user.ID),
 		Name:     user.Name,
 		Email:    user.Email,
@@ -28,8 +28,8 @@ func ConvertGeneral(user *model.User) web.UserReponse {
 	}
 }
 
-func GetConvertGeneral(user *model.User) web.GetUserReponse {
-	return web.GetUserReponse{
+func GetConvertGeneral(user *model.User) web.GetUserResponse {
+	return web.GetUserResponse{
 		Id:    int(user.ID),
 		Name:  user.Name,
 		Email: user.Email,

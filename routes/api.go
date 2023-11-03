@@ -38,7 +38,7 @@ func Init() *echo.Echo {
 	eJwt.DELETE("/users/:id", controller.Delete)
 
 	//Manage Admin
-	eJwt.POST("/admins/register", controller.RegisterAdmin)
+	e.POST("/admins/register", controller.RegisterAdmin)
 	e.POST("/admins/login", controller.LoginAdmin)
 
 	//Manage Point

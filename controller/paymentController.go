@@ -13,6 +13,7 @@ import (
 	"strings"
 )
 
+/*
 func CreatePayment(c echo.Context) error {
 	var payment web.PaymentResponse
 
@@ -43,6 +44,61 @@ func CreatePayment(c echo.Context) error {
 	updatedPoint.UserId = existingPoint.UserId
 	if updatedPoint.Amount < 0 {
 		updatedPoint.Amount = 0
+	}
+	config.DB.Model(&existingPoint).Updates(map[string]interface{}{"amount": updatedPoint.Amount})
+
+	if err := config.DB.Create(&paymentDb).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to store payment data"))
+	}
+
+	response := res.PassPaymentBody(paymentDb)
+
+	return c.JSON(http.StatusCreated, utils.SuccessResponse("Success Created Data", response))
+}
+*/
+
+func CreatePayment(c echo.Context) error {
+	var payment web.PaymentResponse
+	if err := c.Bind(&payment); err != nil {
+		return c.JSON(http.StatusBadRequest, utils.ErrorResponse("Invalid request body"))
+	}
+	headerAuth := c.Request().Header.Get("Authorization")
+	if headerAuth == "" {
+		headerAuth = "Bearer " + model.DummyToken
+	}
+	token := strings.Split(headerAuth, " ")[1]
+	var claim *utils.MyClaims
+	claim = utils.ParseToken(token)
+
+	var existingPoint model.Point
+	var updatedPoint model.Point
+	if err := config.DB.Where("user_id = ?", claim.ID).First(&existingPoint).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to retrieve point from this user"))
+	}
+	paymentDb := req.PaymentPassBody(payment)
+	if paymentDb.Amount > existingPoint.Amount {
+		return c.JSON(http.StatusBadRequest, utils.ErrorResponse("Not enough point"))
+	}
+
+	paymentDb.Status = "process"
+	paymentDb.UserId = claim.ID
+	paymentDb.PointId = int(existingPoint.ID)
+	updatedPoint.Amount = existingPoint.Amount - payment.Amount
+	updatedPoint.UserId = existingPoint.UserId
+	if updatedPoint.Amount < 0 {
+		updatedPoint.Amount = 0
+	}
+	var user model.User
+	if err := config.DB.First(&user, claim.ID).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to retrieve user"))
+	}
+	createAndApprovePayoutResponse, reffNo := utils.CreateAndApprovePayout(user.Name, payment.Number, payment.Type, user.Email, strconv.Itoa(payment.Amount))
+	if createAndApprovePayoutResponse.Status == "ok" {
+		paymentDb.Status = "success"
+		paymentDb.ReferenceNo = reffNo
+	} else {
+		paymentDb.Status = createAndApprovePayoutResponse.Status
+		paymentDb.ReferenceNo = ""
 	}
 	config.DB.Model(&existingPoint).Updates(map[string]interface{}{"amount": updatedPoint.Amount})
 
