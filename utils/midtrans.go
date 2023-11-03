@@ -21,7 +21,7 @@ func createPayout(name string, number string, numberType string, email string, a
 		BeneficiaryBank:    numberType,
 		BeneficiaryEmail:   email,
 		Amount:             amount,
-		Notes:              "Congrats, here's your money!",
+		Notes:              "Congrats this is your money",
 	}
 	var payouts []iris.CreatePayoutDetailReq
 	payouts = append(payouts, p)

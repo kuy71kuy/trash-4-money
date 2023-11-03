@@ -8,7 +8,6 @@ import (
 	"app/utils"
 	"app/utils/req"
 	"app/utils/res"
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"os"
@@ -23,8 +22,6 @@ func RegisterAdmin(c echo.Context) error {
 	}
 	token := headerAuth
 	tokenAdmin := os.Getenv("TOKEN_ADMIN")
-	fmt.Println("\ntoken: ea." + token + ".ea")
-	fmt.Println("\ntokenAdmin: ea." + tokenAdmin + ".ea")
 	if token != tokenAdmin {
 		return c.JSON(http.StatusUnauthorized, utils.ErrorResponse("Invalid credentials"))
 	}
