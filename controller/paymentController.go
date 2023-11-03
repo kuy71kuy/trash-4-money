@@ -101,6 +101,12 @@ func CreatePayment(c echo.Context) error {
 		paymentDb.ReferenceNo = ""
 	}
 	config.DB.Model(&existingPoint).Updates(map[string]interface{}{"amount": updatedPoint.Amount})
+	utils.NotifyPaymentEmail(
+		strconv.Itoa(payment.Amount),
+		payment.Type,
+		user.Email,
+		user.Name,
+		payment.Number)
 
 	if err := config.DB.Create(&paymentDb).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to store payment data"))
@@ -214,10 +220,5 @@ func UpdatePaymentStatusDone(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to update payment"))
 	}
 	response := res.PassPaymentBody(&existingPayment)
-	utils.NotifyPaymentEmail(
-		strconv.Itoa(existingPayment.Amount),
-		existingPayment.Type,
-		user.Email,
-		user.Name)
 	return c.JSON(http.StatusOK, utils.SuccessResponse("Payment data successfully updated", response))
 }

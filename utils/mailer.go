@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"net/smtp"
 	"os"
 )
@@ -10,7 +9,6 @@ func NotifyPointEmail(point, pointBefore, pointAfter, receiverMail, name string)
 
 	senderMail := os.Getenv("MAILER_SENDER_MAIL")
 	password := os.Getenv("MAILER_SENDER_PASS")
-	fmt.Println()
 	mail := "From: " + senderMail + "\n" +
 		"To: " + receiverMail + "\n" +
 		"Subject: " + "Your Point Added" + "\n" +
@@ -28,16 +26,15 @@ func NotifyPointEmail(point, pointBefore, pointAfter, receiverMail, name string)
 	return true
 }
 
-func NotifyPaymentEmail(point, numberType, receiverMail, name string) bool {
+func NotifyPaymentEmail(point, numberType, receiverMail, name, number string) bool {
 
 	senderMail := os.Getenv("MAILER_SENDER_MAIL")
 	password := os.Getenv("MAILER_SENDER_PASS")
-	fmt.Println()
 	mail := "From: " + senderMail + "\n" +
 		"To: " + receiverMail + "\n" +
 		"Subject: " + "Your Payment Done" + "\n" +
 		"Congratulation " + name + "! Your payment of " + point + " has done\n" +
-		"Please check your balance in your " + numberType
+		"Please check your balance in your " + number + " - " + numberType
 
 	err := smtp.SendMail("smtp.gmail.com:587",
 		smtp.PlainAuth("", senderMail, password, "smtp.gmail.com"),
