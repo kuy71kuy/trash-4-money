@@ -20,7 +20,7 @@ func Init() *echo.Echo {
 	e.Use(middleware.NotFoundHandler)
 
 	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Welcome to RESTful API Services")
+		return c.String(http.StatusOK, "Welcome to RESTful API Services test")
 	})
 	eJwt := e.Group("")
 
